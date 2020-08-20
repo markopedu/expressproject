@@ -7,3 +7,18 @@ block content
         h3 #{user.username}
         p  id: #{id}
         hr
+        h5(style='border-bottom:1px solid black;') Messages to User #{user.username}
+        ul
+            each message in messages
+                li
+                    b #{message.text} | &nbsp;
+                    small (#{message.createdAt})
+        hr
+        fieldset
+            form(action='message', method='post')
+                input(type='hidden', name='id', value='#{id}')
+                label Add Message
+                br
+                textarea(name='textMessage', required='required', rows=4)
+                br
+                input(type='submit')

@@ -17,13 +17,17 @@ router.get('/:id', async function(req, res, next) {
 
   const { id } = req.params;
 
-  if(typeof id !== "number" ||  id === 'create') {
+  if(id === 'create') {
     next();
   }
 
   const user = await model.User.findById(id);
 
-  res.render('user', { title: 'The User', user, id });
+  const messages = await model.Message.find({ user: id });
+
+  console.log('msg: ', messages);
+
+  res.render('user', { title: 'The User', user, id, messages });
 });
 
 router.get('/create', async function(req, res, next) {
@@ -47,6 +51,20 @@ router.post('/create', async function(req, res, next) {
   await user.save();
 
   res.redirect('/users');
+});
+
+router.post('/message', async function (req, res, next) {
+    const { id, textMessage } = req.body;
+
+    console.log('add message: ', id, textMessage);
+    const message = new model.Message({
+        text: textMessage,
+        user: id
+    });
+
+    await message.save();
+
+   res.redirect(`/users/${id}`);
 });
 
 module.exports = router;
