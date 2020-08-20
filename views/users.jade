@@ -6,4 +6,5 @@ block content
 
   ul
     each user in users
-      li #{user.username}
+      li
+        a(href='users/' + user._id) #{user.username}
