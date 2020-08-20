@@ -1,6 +1,22 @@
-body {
-  padding: 50px;
+html, body {
+  margin: 0;
+  padding: 0;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background: #dbd9d9;
+}
+
+.content {
+    width: 65vw;
+    margin: 0 auto;
+    padding: 25px;
+    background: #fff;
+    min-height: 100vh;
+}
+
+@media (max-width: 720px) {
+    .content {
+      width: 100vw;
+    }
 }
 
 a {
@@ -9,4 +25,23 @@ a {
 
 textarea {
   width: 300px;
+}
+
+header {
+   position: fixed;
+   top: 0;
+   margin: 0;
+   padding: 10px 0;
+   background: #565454;
+   color: #fff;
+   width: 100%;
+}
+
+header h2 {
+    text-align: center;
+}
+
+header h2 a {
+    color: white;
+    text-decoration: none;
 }
