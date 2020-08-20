@@ -12,4 +12,4 @@ ENV PORT=3000
 
 EXPOSE 3000
 
-CMD [ "nodemon", "-L", "src/app.js" ]
+CMD [ "nodemon", "-L", "src/index.js" ]
