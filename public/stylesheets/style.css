@@ -45,3 +45,45 @@ header h2 a {
     color: white;
     text-decoration: none;
 }
+
+.error {
+    background: pink;
+    color: #960505;
+    padding: 50px;
+}
+
+.logged-in-user {
+    color: darkgreen;
+    background: lightgreen;
+    font-weight: bold;
+    padding: 20px;
+}
+
+.logged-out {
+    color: #545403;
+    background: #f6f680;
+    font-weight: bold;
+    padding: 20px;
+}
+
+.errors {
+    padding: 10px 0;
+    background: pink;
+    color: #960505;
+    list-style: none;
+}
+
+.errors li {
+    margin: 0 10px;
+}
+
+.infos {
+    padding: 10px 0;
+    color: navy;
+    background: #00B7FF;
+    list-style: none;
+}
+
+.infos li {
+    margin: 0 10px;
+}

@@ -8,15 +8,23 @@ const model = require('../models/index');
 const csrfProtection = csrf({ cookie: true });
 const parseForm = bodyParser.urlencoded({ extended: false });
 
-/* GET users listing. */
-router.get('/',  async function (req, res, next) {
-  const users = await model.User.find();
-  console.log('users: ', users);
+function ensureAuthenticated(req, res, next) {
+    if(req.isAuthenticated()) {
+        next();
+    } else {
+        req.flash('info', 'You must be logged in to see this page.');
+        res.redirect('/');
+    }
+}
 
-  res.render('users', { title: 'Users', users: users });
+/* GET users listing. */
+router.get('/', ensureAuthenticated, async function (req, res, next) {
+  const users = await model.User.find();
+
+  res.render('users/users', { title: 'Users', users: users });
 });
 
-router.get('/:id', csrfProtection, async function(req, res, next) {
+router.get('/:id', ensureAuthenticated, csrfProtection, async function(req, res, next) {
 
   const { id } = req.params;
 
@@ -25,21 +33,18 @@ router.get('/:id', csrfProtection, async function(req, res, next) {
   }
 
   const user = await model.User.findById(id);
-
   const messages = await model.Message.find({ user: id });
 
-  console.log('msg: ', messages);
-
-  res.render('user', { title: 'The User', user, id, messages, csrfToken: req.csrfToken() });
+  res.render('users/user', { title: 'The User', user, id, messages, csrfToken: req.csrfToken() });
 });
 
-router.get('/create', csrfProtection, async function(req, res, next) {
-   res.render('createuser', {  title: 'Create User', csrfToken: req.csrfToken() });
+router.get('/create', ensureAuthenticated, csrfProtection, async function(req, res, next) {
+   res.render('users/createuser', {  title: 'Create User', csrfToken: req.csrfToken() });
 });
 
-router.post('/create', parseForm, csrfProtection, async function(req, res, next) {
+router.post('/create', ensureAuthenticated, parseForm, csrfProtection, async function(req, res, next) {
 
-  const { username } = req.body;
+  const { username, password } = req.body;
 
   const existingUser = model.User.findOne({ username: username });
 
@@ -48,7 +53,9 @@ router.post('/create', parseForm, csrfProtection, async function(req, res, next)
   }
 
   const user = new model.User({
-        username: username
+        username: username,
+        password: password,
+        role: 'USER'
   });
 
   await user.save();
@@ -56,10 +63,9 @@ router.post('/create', parseForm, csrfProtection, async function(req, res, next)
   res.redirect('/users');
 });
 
-router.post('/message', parseForm, csrfProtection, async function (req, res, next) {
+router.post('/message', ensureAuthenticated, parseForm, csrfProtection, async function (req, res, next) {
     const { id, textMessage } = req.body;
 
-    console.log('add message: ', id, textMessage);
     const message = new model.Message({
         text: textMessage,
         user: id

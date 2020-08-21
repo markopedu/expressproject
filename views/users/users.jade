@@ -1,0 +1,13 @@
+extends ../layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  a(href='/users/create') Create User
+
+  ul
+    each user in users
+      li
+        a(href='users/' + user._id)
+            span #{user.username}  &nbsp; -- &nbsp;
+            b(title='role') #{user.role}

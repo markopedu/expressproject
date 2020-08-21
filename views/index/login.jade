@@ -1,0 +1,17 @@
+extends ../layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  form(method='post', action='login')
+      input(type='hidden', name='_csrf', value='#{csrfToken}')
+      label User Name
+      br
+      input(type='text', name='username', required='required')
+      br
+      label Password
+      br
+      input(type='password', name='password', required='required')
+      br
+      input(type='submit')
+   hr

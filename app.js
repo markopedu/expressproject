@@ -5,6 +5,8 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
+const flash = require('connect-flash');
+const passport = require('passport');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -14,7 +16,16 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use(session({ secret: '6558BDD2-423F-4AF4-A444-0C82443400C7'}));
+app.use(session({
+  secret: '6558BDD2-423F-4AF4-A444-0C82443400C7',
+  resave: true,
+  saveUninitialized: true
+}));
+
+app.use(flash());
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

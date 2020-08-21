@@ -1,0 +1,33 @@
+extends ../layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  p Please login, DEFAULT USER is JohnDoe & password is secret.
+  ul
+    li
+      a(href='/login') Login
+    li
+      a(href='/users') Users
+  hr
+
+  if isLoggedIn === true
+    div(class='logged-in-user') Welcome #{loggedInUserName}! You're logged in!  &nbsp;
+          a(href='/logout') Log out
+  else
+    div(class='logged-out') You're logged out!
+
+  if errors.length > 0
+    ul(class='errors')
+      each error in errors
+        li #{error}
+    br
+
+  if infos.length > 0
+    ul(class='infos')
+      each info in infos
+        li #{info}
+
+  div(style='display:flex;justify-content: center;margin: 10px 0 0 0;')
+    img(src='images/nodejs-520.jpg')
+  hr

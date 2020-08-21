@@ -1,4 +1,4 @@
-extends layout
+extends ../layout
 
 block content
     h1= title
@@ -9,6 +9,10 @@ block content
             label User Name
             br
             input(type='text', name='username', required='required')
+            br
+            label Password
+            br
+            input(type='password', name='password', required='required')
             br
             input(type='submit')
         hr
