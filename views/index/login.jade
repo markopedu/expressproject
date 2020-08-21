@@ -2,7 +2,7 @@ extends ../layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  h4 Welcome to #{title}
   form(method='post', action='login')
       input(type='hidden', name='_csrf', value='#{csrfToken}')
       label User Name
@@ -14,4 +14,16 @@ block content
       input(type='password', name='password', required='required')
       br
       input(type='submit')
-   hr
+      hr
+
+   div
+       if errors.length > 0
+           ul(class='errors')
+               each error in errors
+                   li #{error}
+           br
+
+       if infos.length > 0
+           ul(class='infos')
+               each info in infos
+                   li #{info}

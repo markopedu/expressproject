@@ -44,7 +44,7 @@ router.get('/create', ensureAuthenticated, csrfProtection, async function(req, r
 
 router.post('/create', ensureAuthenticated, parseForm, csrfProtection, async function(req, res, next) {
 
-  const { username, password } = req.body;
+  const { username, password, bio } = req.body;
 
   const existingUser = model.User.findOne({ username: username });
 
@@ -55,6 +55,7 @@ router.post('/create', ensureAuthenticated, parseForm, csrfProtection, async fun
   const user = new model.User({
         username: username,
         password: password,
+        bio: bio,
         role: 'USER'
   });
 

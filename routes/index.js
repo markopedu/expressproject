@@ -6,7 +6,6 @@ const passport = require('passport');
 
 
 router.use(function (req, res, next) {
-    console.log('loggedInUser: res.locals.currentUser: ', req.user);
     res.locals.currentUser = req.user;
     res.locals.errors = req.flash('error');
     res.locals.infos = req.flash('info');
@@ -24,7 +23,6 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/login', csrfProtection, function (req, res, next){
-
   res.render('index/login', { title: 'Login', csrfToken: req.csrfToken() });
 })
 
