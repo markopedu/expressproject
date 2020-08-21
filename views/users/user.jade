@@ -8,6 +8,11 @@ block content
         p  id: #{id}
         div #{user.bio}
         hr
+        form(action='deleteuser', method='post')
+            input(type='hidden', name='_csrf', value='#{csrfToken}')
+            input(type='hidden', name='id', value='#{id}')
+            input(type='submit', value='Delete User')
+
         h5(style='border-bottom:1px solid black;') Messages to User #{user.username}
         ul
             each message in messages

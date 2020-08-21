@@ -24,6 +24,8 @@ router.get('/', ensureAuthenticated, async function (req, res, next) {
   res.render('users/users', { title: 'Users', users: users });
 });
 
+
+
 router.get('/:id', ensureAuthenticated, csrfProtection, async function(req, res, next) {
 
   const { id } = req.params;
@@ -76,5 +78,17 @@ router.post('/message', ensureAuthenticated, parseForm, csrfProtection, async fu
 
    res.redirect(`/users/${id}`);
 });
+
+router.post('/deleteuser', ensureAuthenticated, parseForm, csrfProtection, async function (req, res, next){
+    const { id } = req.body;
+
+    const user = await model.User.findById(id);
+
+    if (user) {
+        await user.deleteOne();
+    }
+
+    res.redirect('/users');
+})
 
 module.exports = router;

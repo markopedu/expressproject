@@ -13,13 +13,17 @@ const usersRouter = require('./routes/users');
 
 const app = express();
 
+// 10 minutes
+const SESSION_TIME = 600000;
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(session({
   secret: '6558BDD2-423F-4AF4-A444-0C82443400C7',
   resave: true,
-  saveUninitialized: true
+  saveUninitialized: true,
+  cookie: { maxAge: SESSION_TIME }
 }));
 
 app.use(flash());
