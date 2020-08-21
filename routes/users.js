@@ -1,9 +1,12 @@
 const express = require('express');
 const router = express.Router();
+const csrf = require('csurf');
+const bodyParser = require('body-parser');
 
 const model = require('../models/index');
 
-
+const csrfProtection = csrf({ cookie: true });
+const parseForm = bodyParser.urlencoded({ extended: false });
 
 /* GET users listing. */
 router.get('/',  async function (req, res, next) {
@@ -13,7 +16,7 @@ router.get('/',  async function (req, res, next) {
   res.render('users', { title: 'Users', users: users });
 });
 
-router.get('/:id', async function(req, res, next) {
+router.get('/:id', csrfProtection, async function(req, res, next) {
 
   const { id } = req.params;
 
@@ -27,14 +30,14 @@ router.get('/:id', async function(req, res, next) {
 
   console.log('msg: ', messages);
 
-  res.render('user', { title: 'The User', user, id, messages });
+  res.render('user', { title: 'The User', user, id, messages, csrfToken: req.csrfToken() });
 });
 
-router.get('/create', async function(req, res, next) {
-   res.render('createuser', {  title: 'Create User' });
+router.get('/create', csrfProtection, async function(req, res, next) {
+   res.render('createuser', {  title: 'Create User', csrfToken: req.csrfToken() });
 });
 
-router.post('/create', async function(req, res, next) {
+router.post('/create', parseForm, csrfProtection, async function(req, res, next) {
 
   const { username } = req.body;
 
@@ -53,7 +56,7 @@ router.post('/create', async function(req, res, next) {
   res.redirect('/users');
 });
 
-router.post('/message', async function (req, res, next) {
+router.post('/message', parseForm, csrfProtection, async function (req, res, next) {
     const { id, textMessage } = req.body;
 
     console.log('add message: ', id, textMessage);

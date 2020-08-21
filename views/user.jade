@@ -16,6 +16,7 @@ block content
         hr
         fieldset
             form(action='message', method='post')
+                input(type='hidden', name='_csrf', value='#{csrfToken}')
                 input(type='hidden', name='id', value='#{id}')
                 label Add Message
                 br

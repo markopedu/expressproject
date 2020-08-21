@@ -5,6 +5,7 @@ block content
     p Welcome to #{title}
     div
         form(method='post', action='create')
+            input(type='hidden', name='_csrf', value='#{csrfToken}')
             label User Name
             br
             input(type='text', name='username', required='required')
