@@ -7,15 +7,14 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
 const passport = require('passport');
+const config = require('./config/config');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const apiUsersRouter = require('./routes/apiusers');
+const apiLogin = require('./routes/apilogin');
 
 const app = express();
-
-// 10 minutes
-const SESSION_TIME = 600000;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -24,7 +23,7 @@ app.use(session({
   secret: '6558BDD2-423F-4AF4-A444-0C82443400C7',
   resave: true,
   saveUninitialized: true,
-  cookie: { maxAge: SESSION_TIME }
+  cookie: { maxAge: config.SESSION_TIME }
 }));
 
 app.use(flash());
@@ -44,6 +43,7 @@ app.use(express.static('public'));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/api/v1/', apiLogin);
 app.use('/api/v1/users', apiUsersRouter);
 
 // catch 404 and forward to error handler

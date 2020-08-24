@@ -1,7 +1,9 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 
-const User = require('./user');
+const loginUser = require('./loginuser');
+
+const model = require('../models/index');
 
 module.exports = function () {
 
@@ -10,31 +12,13 @@ module.exports = function () {
         });
 
         passport.deserializeUser(function (id, done) {
-              User.findById(id, function (err, user) {
+              model.User.findById(id, function (err, user) {
                   done(err, user);
               })
         });
 
-        passport.use('login', new LocalStrategy(function (username, password, done) {
-                User.findOne({ username: username }, function (err, user) {
-                      if(err) { return done(err); }
-
-                      if(!user) {
-                          return done(null, false, { message: 'No User has that username!' });
-                      }
-
-                      user.checkPassword(password, function (err, isMatch) {
-                            if(err) { return done(err); }
-
-                            console.log('Login Attempt: ', user, isMatch);
-
-                            if(isMatch) {
-                                return done(null, user);
-                            } else {
-                                return done(null, false, { message: 'Invalid Password.' });
-                            }
-                      });
-                });
-
+        passport.use('login', new LocalStrategy(function(username, password, done) {
+             return loginUser(username, password, done);
         }));
+
 };

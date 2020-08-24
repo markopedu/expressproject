@@ -24,10 +24,6 @@ userSchema.methods.checkPassword = function (password, done) {
     });
 };
 
-userSchema.methods.findApiUsers = function () {
-    return this.find();
-}
-
 userSchema.statics.findByLogin = async function(login) {
         let user = await this.findOne({
             username: login,
